@@ -1,0 +1,203 @@
+<app-header></app-header>
+
+<div class="profile-container">
+  <div class="container">
+    <div class="profile-card">
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <div class="avatar">
+          <img 
+            *ngIf="user?.profilePicture" 
+            [src]="user?.profilePicture" 
+            [alt]="user?.pseudo"
+          >
+          <div *ngIf="!user?.profilePicture" class="avatar-placeholder">
+            {{ user?.pseudo?.charAt(0)?.toUpperCase() }}
+          </div>
+        </div>
+        <div class="user-info">
+          <h1>{{ user?.name }} {{ user?.lastname }}</h1>
+    <p class="pseudo">{{ '@' }}{{ user?.pseudo }}</p>
+          <span class="role-badge" [class]="user?.role">{{ user?.role }}</span>
+        </div>
+      </div>
+
+      <!-- Success/Error Messages -->
+      <div class="success-message" *ngIf="successMessage">
+        ✅ {{ successMessage }}
+      </div>
+      <div class="error-message" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <!-- Profile Information -->
+      <div class="profile-section">
+        <div class="section-header">
+          <h2>Profile Information</h2>
+          <button 
+            *ngIf="!isEditing" 
+            class="btn-edit" 
+            (click)="toggleEdit()"
+          >
+            ✏️ Edit
+          </button>
+        </div>
+
+        <form *ngIf="!isEditing" class="profile-info">
+          <div class="info-row">
+            <span class="label">First Name:</span>
+            <span class="value">{{ user?.name }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Last Name:</span>
+            <span class="value">{{ user?.lastname }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Username:</span>
+            <span class="value">{{ user?.pseudo }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Email:</span>
+            <span class="value">{{ user?.email }}</span>
+          </div>
+        </form>
+
+        <!-- Edit Form -->
+        <form *ngIf="isEditing" class="edit-form" (ngSubmit)="updateProfile()">
+          <div class="form-group">
+            <label>First Name</label>
+            <input 
+              type="text" 
+              [(ngModel)]="formData.name" 
+              name="name"
+              required
+              [disabled]="isLoading"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Last Name</label>
+            <input 
+              type="text" 
+              [(ngModel)]="formData.lastname" 
+              name="lastname"
+              required
+              [disabled]="isLoading"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Username</label>
+            <input 
+              type="text" 
+              [(ngModel)]="formData.pseudo" 
+              name="pseudo"
+              required
+              [disabled]="isLoading"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Profile Picture URL</label>
+            <input 
+              type="text" 
+              [(ngModel)]="formData.profilePicture" 
+              name="profilePicture"
+              placeholder="https://example.com/image.jpg"
+              [disabled]="isLoading"
+            >
+          </div>
+
+          <div class="form-actions">
+            <button 
+              type="button" 
+              class="btn-cancel" 
+              (click)="cancelEdit()"
+              [disabled]="isLoading"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              class="btn-save"
+              [disabled]="isLoading"
+            >
+              <span *ngIf="!isLoading">Save Changes</span>
+              <app-loader *ngIf="isLoading"></app-loader>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Change Password Section -->
+      <div class="profile-section">
+        <div class="section-header">
+          <h2>Security</h2>
+          <button 
+            *ngIf="!showPasswordForm" 
+            class="btn-edit" 
+            (click)="togglePasswordForm()"
+          >
+            🔒 Change Password
+          </button>
+        </div>
+
+        <form *ngIf="showPasswordForm" class="password-form" (ngSubmit)="changePassword()">
+          <div class="form-group">
+            <label>Current Password</label>
+            <input 
+              type="password" 
+              [(ngModel)]="passwordData.currentPassword" 
+              name="currentPassword"
+              required
+              [disabled]="isLoading"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>New Password</label>
+            <input 
+              type="password" 
+              [(ngModel)]="passwordData.newPassword" 
+              name="newPassword"
+              required
+              [disabled]="isLoading"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input 
+              type="password" 
+              [(ngModel)]="passwordData.confirmPassword" 
+              name="confirmPassword"
+              required
+              [disabled]="isLoading"
+            >
+          </div>
+
+          <div class="form-actions">
+            <button 
+              type="button" 
+              class="btn-cancel" 
+              (click)="togglePasswordForm()"
+              [disabled]="isLoading"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              class="btn-save"
+              [disabled]="isLoading"
+            >
+              <span *ngIf="!isLoading">Change Password</span>
+              <app-loader *ngIf="isLoading"></app-loader>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

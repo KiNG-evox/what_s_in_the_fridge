@@ -1,0 +1,104 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Create Account </h1>
+      <p>Join What's in the Fridge today!</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">First Name</label>
+          <input
+            type="text"
+            id="name"
+            [(ngModel)]="formData.name"
+            name="name"
+            placeholder="Karima"
+            required
+            [disabled]="isLoading"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="lastname">Last Name</label>
+          <input
+            type="text"
+            id="lastname"
+            [(ngModel)]="formData.lastname"
+            name="lastname"
+            placeholder="L'hsk"
+            required
+            [disabled]="isLoading"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pseudo">Username</label>
+        <input
+          type="text"
+          id="pseudo"
+          [(ngModel)]="formData.pseudo"
+          name="pseudo"
+          placeholder="Lxlhsk"
+          required
+          [disabled]="isLoading"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="formData.email"
+          name="email"
+          placeholder="Lxlhsk@example.com"
+          required
+          [disabled]="isLoading"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="formData.password"
+          name="password"
+          placeholder="••••••••"
+          required
+          [disabled]="isLoading"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          [(ngModel)]="formData.confirmPassword"
+          name="confirmPassword"
+          placeholder="••••••••"
+          required
+          [disabled]="isLoading"
+        >
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-register" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Create Account</span>
+        <app-loader *ngIf="isLoading"></app-loader>
+      </button>
+
+      <div class="login-link">
+        Already have an account?
+        <a routerLink="/login">Login here</a>
+      </div>
+    </form>
+  </div>
+</div>

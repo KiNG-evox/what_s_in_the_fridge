@@ -1,0 +1,34 @@
+<div class="review-item">
+  <div class="review-header">
+    <div class="user-info">
+      <div class="avatar">{{ review.user.pseudo?.charAt(0).toUpperCase() }}</div>
+      <div>
+        <div class="user-name">{{ review.user.name }} {{ review.user.lastname }}</div>
+        <div class="user-pseudo">{{ '@' + review.user.pseudo }}</div>
+      </div>
+    </div>
+
+    <div class="review-meta">
+      <div class="stars">
+        <i 
+          *ngFor="let star of [1,2,3,4,5]" 
+          class="fas" 
+          [ngClass]="star <= review.rating ? 'fa-star' : 'fa-star-half-alt'">
+        </i>
+      </div>
+      <div class="review-date">
+        <i class="far fa-calendar-alt"></i> {{ review.createdAt | date: 'MMM d, y' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="review-comment">
+    {{ review.comment }}
+  </div>
+
+  <div class="review-actions" *ngIf="isOwner || isAdmin">
+    <button class="btn-delete" (click)="onDelete()">
+      <i class="fas fa-trash-alt"></i> Delete
+    </button>
+  </div>
+</div>

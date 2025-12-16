@@ -1,0 +1,318 @@
+<app-header></app-header>
+
+<div class="admin-container">
+  <div class="container">
+    <div class="admin-header">
+      <h1><i class="fas fa-lock"></i> Admin Dashboard</h1>
+      <p>Manage users, recipes, and platform statistics</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-info">
+          <h3>{{ stats.totalUsers }}</h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-utensils"></i></div>
+        <div class="stat-info">
+          <h3>{{ stats.totalRecipes }}</h3>
+          <p>Total Recipes</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-warning">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <div class="stat-info">
+          <h3>{{ stats.pendingRecipes }}</h3>
+          <p>Pending Approval</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-success">
+        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-info">
+          <h3>{{ stats.approvedRecipes }}</h3>
+          <p>Approved Recipes</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+        <div class="stat-info">
+          <h3>{{ stats.rejectedRecipes }}</h3>
+          <p>Rejected Recipes</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-heart"></i></div>
+        <div class="stat-info">
+          <h3>{{ stats.totalFavorites }}</h3>
+          <p>Total Favorites</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-star"></i></div>
+        <div class="stat-info">
+          <h3>{{ stats.totalReviews }}</h3>
+          <p>Total Reviews</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'users'"
+        (click)="switchTab('users')"
+      >
+        <i class="fas fa-users"></i> Users
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'recipes'"
+        (click)="switchTab('recipes')"
+      >
+        <i class="fas fa-utensils"></i> Recipes
+        <span class="badge-pending" *ngIf="stats.pendingRecipes > 0">{{ stats.pendingRecipes }}</span>
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <app-loader></app-loader>
+      <p>Loading data...</p>
+    </div>
+
+    <!-- Users Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'users' && !isLoading">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">{{ user.pseudo?.charAt(0).toUpperCase() }}</div>
+                  <div>
+                    <div class="user-name">{{ user.name }} {{ user.lastname }}</div>
+                    <div class="user-pseudo">{{ '@' }}{{ user.pseudo }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="role-badge" [class]="user.role">{{ user.role }}</span>
+              </td>
+              <td>{{ user.createdAt | date: 'MMM d, y' }}</td>
+              <td>
+                <button 
+                  class="btn-delete" 
+                  (click)="deleteUser(user._id)"
+                  [disabled]="user.role === 'admin'"
+                >
+                  <i class="fas fa-trash-alt"></i> Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="empty-state" *ngIf="users.length === 0">
+          <p>No users found</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recipes Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'recipes' && !isLoading">
+      
+      <!-- Recipe Filter Tabs -->
+      <div class="recipe-filters">
+        <button 
+          class="filter-btn" 
+          [class.active]="recipeFilterTab === 'pending'"
+          (click)="switchRecipeFilter('pending')"
+        >
+          <i class="fas fa-clock"></i> Pending ({{ stats.pendingRecipes }})
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="recipeFilterTab === 'approved'"
+          (click)="switchRecipeFilter('approved')"
+        >
+          <i class="fas fa-check-circle"></i> Approved ({{ stats.approvedRecipes }})
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="recipeFilterTab === 'rejected'"
+          (click)="switchRecipeFilter('rejected')"
+        >
+          <i class="fas fa-times-circle"></i> Rejected ({{ stats.rejectedRecipes }})
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="recipeFilterTab === 'all'"
+          (click)="switchRecipeFilter('all')"
+        >
+          <i class="fas fa-list"></i> All ({{ stats.totalRecipes }})
+        </button>
+      </div>
+
+      <!-- Recipes Grid -->
+      <div class="recipes-grid">
+        <div class="recipe-admin-card" *ngFor="let recipe of pendingRecipes">
+          
+          <div class="recipe-status-badge" [ngClass]="getStatusBadgeClass(recipe.status)">
+            {{ recipe.status }}
+          </div>
+
+          
+          <img [src]="getImageUrl(recipe.image)" [alt]="recipe.title" class="recipe-image" (click)="viewRecipeDetails(recipe)">
+          
+          <div class="recipe-info">
+            <h3 (click)="viewRecipeDetails(recipe)">{{ recipe.title }}</h3>
+            <p class="recipe-meta">
+              <i class="fas fa-tag"></i> {{ recipe.category }} • 
+              <i class="fas fa-signal"></i> {{ recipe.difficulty }}
+            </p>
+            <p class="recipe-author">
+              <i class="fas fa-user"></i> By {{ recipe.requestedBy?.name || 'Unknown' }} 
+              ({{ '@' }}{{ recipe.requestedBy?.pseudo }})
+            </p>
+            <p class="recipe-date">
+              <i class="fas fa-calendar"></i> {{ recipe.createdAt | date: 'MMM d, y, h:mm a' }}
+            </p>
+
+            <div class="rejection-reason" *ngIf="recipe.status === 'rejected' && recipe.rejectionReason">
+              <strong>Rejection Reason:</strong> {{ recipe.rejectionReason }}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="recipe-actions">
+              <ng-container *ngIf="recipe.status === 'pending'">
+                <button class="btn-approve" (click)="approveRecipe(recipe._id)">
+                  <i class="fas fa-check"></i> Approve
+                </button>
+                <button class="btn-reject" (click)="openRejectModal(recipe)">
+                  <i class="fas fa-times"></i> Reject
+                </button>
+              </ng-container>
+
+              <ng-container *ngIf="recipe.status === 'approved'">
+                <button class="btn-reject" (click)="openRejectModal(recipe)">
+                  <i class="fas fa-times"></i> Reject
+                </button>
+              </ng-container>
+
+              <ng-container *ngIf="recipe.status === 'rejected'">
+                <button class="btn-approve" (click)="approveRecipe(recipe._id)">
+                  <i class="fas fa-check"></i> Approve
+                </button>
+              </ng-container>
+
+              <button class="btn-delete" (click)="deleteRecipe(recipe._id)">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="pendingRecipes.length === 0">
+        <i class="fas fa-inbox fa-3x"></i>
+        <p>No {{ recipeFilterTab }} recipes found</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal-overlay" *ngIf="showRejectModal" (click)="closeRejectModal()">
+  <div class="modal-content reject-modal" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeRejectModal()">×</button>
+    
+    <h2><i class="fas fa-times-circle"></i> Reject Recipe</h2>
+    <p>Please provide a reason for rejecting "{{ selectedRecipe?.title }}"</p>
+    
+    <div class="form-group">
+      <label>Rejection Reason *</label>
+      <textarea 
+        [(ngModel)]="rejectionReason" 
+        placeholder="Explain why this recipe is being rejected..."
+        rows="4"
+        class="rejection-textarea"
+      ></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" (click)="submitRejection()" [disabled]="!rejectionReason.trim()">
+        <i class="fas fa-times"></i> Reject Recipe
+      </button>
+      <button class="btn-secondary" (click)="closeRejectModal()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Recipe Details Modal -->
+<div class="modal-overlay" *ngIf="selectedRecipe && !showRejectModal" (click)="closeRecipeDetails()">
+  <div class="modal-content recipe-details-modal" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeRecipeDetails()">×</button>
+    
+    <div class="recipe-details">
+      <div class="recipe-status-large" [ngClass]="getStatusBadgeClass(selectedRecipe.status)">
+        {{ selectedRecipe.status }}
+      </div>
+
+      <h2>{{ selectedRecipe.title }}</h2>
+      <img [src]="getImageUrl(selectedRecipe.image)" [alt]="selectedRecipe.title" class="recipe-image-large">
+      <p class="recipe-description">{{ selectedRecipe.description }}</p>
+
+      <div class="recipe-meta-grid">
+        <div><strong>Category:</strong> {{ selectedRecipe.category }}</div>
+        <div><strong>Difficulty:</strong> {{ selectedRecipe.difficulty }}</div>
+        <div><strong>Servings:</strong> {{ selectedRecipe.servings }}</div>
+        <div><strong>Prep Time:</strong> {{ selectedRecipe.preparationTime }} min</div>
+        <div><strong>Cook Time:</strong> {{ selectedRecipe.cookingTime }} min</div>
+        <div><strong>Author:</strong> {{ selectedRecipe.requestedBy?.name }}</div>
+      </div>
+
+      <div class="recipe-section">
+        <h3>Ingredients</h3>
+        <ul>
+          <li *ngFor="let ing of selectedRecipe.ingredients">
+            {{ ing.quantity }} {{ ing.unit }} {{ ing.name }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="recipe-section">
+        <h3>Instructions</h3>
+        <ol>
+          <li *ngFor="let inst of selectedRecipe.instructions">
+            {{ inst.description }}
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

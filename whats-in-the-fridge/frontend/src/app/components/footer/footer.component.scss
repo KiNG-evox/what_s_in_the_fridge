@@ -1,0 +1,152 @@
+/* ============================================
+   FOOTER STYLES - What's in the Fridge
+   ============================================ */
+.logo img {
+  height: 90px;
+  width: auto;
+  transition: all 0.3s ease;
+  filter: drop-shadow(2px 2px 4px rgba(0, 191, 255, 0.25));
+}
+
+.footer {
+  background: #000428; /* fallback */
+  background: -webkit-linear-gradient(to right, #004e92, #000428);
+  background: linear-gradient(to right, #004e92, #000428);
+  
+  color: #FFFFFF;
+  padding: 3rem 0 1rem;
+  margin-top: 4rem;
+  box-shadow: 0 -4px 12px rgba(0, 191, 255, 0.25);
+}
+
+/* Container */
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Content Grid */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Titles */
+.footer-section h3,
+.footer-section h4 {
+  color: #FFD700;
+  letter-spacing: 0.5px;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+/* Text */
+.footer-section p {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Links */
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.7rem;
+}
+
+.footer-section ul li a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  padding-left: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.footer-section ul li a::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #FFD700;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #FFD700;
+  padding-left: 1.5rem;
+  transform: translateX(3px);
+}
+
+.footer-section ul li a:hover::before {
+  opacity: 1;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-links a {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  font-size: 1.3rem;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background: #FFD700;
+  border-color: #FFD700;
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+}
+
+.social-links i {
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover i {
+  color: #000428;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+}

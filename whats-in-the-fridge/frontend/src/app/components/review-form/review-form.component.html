@@ -1,0 +1,48 @@
+<div class="review-form">
+  <h3>Write a Review</h3>
+
+  <!-- Rating Section -->
+  <div class="rating-section">
+    <label>Your Rating:</label>
+    <div class="stars">
+      <i
+        *ngFor="let star of [1,2,3,4,5]"
+        class="fas star"
+        [ngClass]="star <= (hoveredRating || rating) ? 'fa-star' : 'fa-star-half-alt'"
+        (click)="setRating(star)"
+        (mouseenter)="setHoveredRating(star)"
+        (mouseleave)="setHoveredRating(0)"
+      ></i>
+    </div>
+    <span class="rating-text" *ngIf="rating > 0">
+      {{ rating }} out of 5 stars
+    </span>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="comment-section">
+    <label>Your Review:</label>
+    <textarea
+      [(ngModel)]="comment"
+      placeholder="Share your experience with this recipe..."
+      rows="4"
+      [disabled]="isSubmitting"
+    ></textarea>
+    <div class="char-count">{{ comment.length }}/500</div>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-triangle"></i> {{ errorMessage }}
+  </div>
+
+  <!-- Submit Button -->
+  <button
+    class="btn-submit"
+    (click)="submitReview()"
+    [disabled]="isSubmitting"
+  >
+    <span *ngIf="!isSubmitting">Submit Review</span>
+    <app-loader *ngIf="isSubmitting"></app-loader>
+  </button>
+</div>

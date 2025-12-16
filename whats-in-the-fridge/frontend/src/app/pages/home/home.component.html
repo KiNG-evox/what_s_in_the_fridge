@@ -1,0 +1,94 @@
+<app-header></app-header>
+
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">What's in the Fridge?</h1>
+      <p class="hero-subtitle">
+        Tell us what ingredients you have, and we'll create amazing recipes with AI!
+      </p>
+    </div>
+  </section>
+
+  <!-- Generator Section -->
+<section class="generator-section">
+  <div class="container">
+    <div class="generator-card">
+
+      <h2>Discover delicious recipes — just enter your ingredients or a recipe name.</h2>
+      <p class="hint">Enter ingredients separated by commas (e.g., eggs, milk, flour, sugar).</p>
+
+      <div class="input-group">
+        <textarea
+          [(ngModel)]="ingredients"
+          placeholder="eggs, milk, flour, sugar, butter..."
+          rows="4"
+          class="ingredient-input"
+          [disabled]="isLoading"
+        ></textarea>
+      </div>
+
+      <button
+        class="generate-btn"
+        (click)="generateRecipes()"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Generate Recipes</span>
+        <app-loader *ngIf="isLoading"></app-loader>
+      </button>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Generated Recipes Section -->
+  <section class="recipes-section" *ngIf="generatedRecipes.length > 0">
+    <div class="container">
+      <h2 class="section-title">Your Generated Recipes</h2>
+      <div class="recipes-grid">
+        <app-recipe-card
+          *ngFor="let recipe of generatedRecipes"
+          [recipe]="recipe"
+          [showFavoriteButton]="true"
+          (favoriteClick)="onFavoriteRecipe($event)"
+        ></app-recipe-card>
+      </div>
+    </div>
+  </section>
+
+ <!-- How It Works -->
+<section class="how-it-works">
+  <div class="container">
+    <h2>How It Works</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon"><i class="fas fa-carrot"></i></div>
+        <h3>1. Enter Your Ingredients</h3>
+        <p>Let us know what you’ve got in your fridge or pantry.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-icon"><i class="fas fa-magic"></i></div>
+        <h3>2. AI Creates Recipes</h3>
+        <p>Our AI generates delicious, personalized recipe ideas for you.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-icon"><i class="fas fa-utensils"></i></div>
+        <h3>3. Cook & Enjoy</h3>
+        <p>Follow the steps, make your meal, and enjoy your creation!</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<app-footer></app-footer>

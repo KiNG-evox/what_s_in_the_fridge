@@ -1,0 +1,133 @@
+<!-- ========================== GLOBAL LAYOUT ========================== -->
+<app-header></app-header>
+
+<div class="recipe-detail-container">
+
+  <!-- ========================== LOADING STATE ========================== -->
+  <div class="loading-state" *ngIf="isLoading">
+    <app-loader></app-loader>
+    <p>Loading recipe...</p>
+  </div>
+
+  <!-- ========================== ERROR STATE ========================== -->
+  <div class="error-state" *ngIf="errorMessage && !isLoading">
+    <p>
+      <i class="fas fa-exclamation-triangle"></i> {{ errorMessage }}
+    </p>
+    <button class="btn-back" (click)="goBack()">Go Back</button>
+  </div>
+
+  <!-- ========================== MAIN RECIPE CONTENT ========================== -->
+  <div class="recipe-content" *ngIf="recipe && !isLoading">
+
+    <!-- ========================== HERO SECTION ========================== -->
+    <div class="recipe-hero">
+      <!-- Background Image -->
+      <img [src]="recipe.image" [alt]="recipe.title" class="recipe-hero-image">
+      
+      <!-- Overlay -->
+      <div class="recipe-hero-overlay">
+        <div class="container">
+
+          <!-- Back Button -->
+          <button class="btn-back-white" (click)="goBack()">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+
+          <!-- Title + Description -->
+          <h1 class="recipe-title">{{ recipe.title }}</h1>
+          <p class="recipe-description">{{ recipe.description }}</p>
+
+          <!-- Meta Info -->
+          <div class="recipe-meta">
+            <span class="meta-badge">{{ recipe.difficulty }}</span>
+            <span class="meta-badge">{{ recipe.category }}</span>
+            <span class="meta-badge">
+              <i class="fas fa-clock"></i> {{ recipe.cookingTime + recipe.preparationTime }} min
+            </span>
+            <span class="meta-badge">
+              <i class="fas fa-utensils"></i> {{ recipe.servings }} servings
+            </span>
+          </div>
+
+          <!-- Favorite Button -->
+          <button class="btn-favorite-large" (click)="toggleFavorite()" [class.favorited]="isFavorited">
+            <i class="fas" [ngClass]="isFavorited ? 'fa-heart' : 'fa-heart-broken'"></i>
+            {{ isFavorited ? 'Favorited' : 'Add to Favorites' }}
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================== RECIPE DETAILS ========================== -->
+    <div class="container recipe-details">
+
+      <!-- ===== GRID: INGREDIENTS & NUTRITION ===== -->
+      <div class="details-grid">
+
+        <!-- INGREDIENTS -->
+        <div class="details-card">
+          <h2><i class="fas fa-list"></i> Ingredients</h2>
+          <ul class="ingredients-list">
+            <li *ngFor="let ingredient of recipe.ingredients">
+              <span class="ingredient-amount">{{ ingredient.quantity }} {{ ingredient.unit }}</span>
+              <span class="ingredient-name">{{ ingredient.name }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- NUTRITIONAL INFO -->
+        <div class="details-card">
+          <h2><i class="fas fa-apple-alt"></i> Nutritional Information</h2>
+          <div class="nutrition-grid">
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ recipe.nutritionalInfo.calories }}</div>
+              <div class="nutrition-label">Calories</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ recipe.nutritionalInfo.protein }}g</div>
+              <div class="nutrition-label">Protein</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ recipe.nutritionalInfo.carbs }}g</div>
+              <div class="nutrition-label">Carbs</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ recipe.nutritionalInfo.fat }}g</div>
+              <div class="nutrition-label">Fat</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ========================== INSTRUCTIONS ========================== -->
+      <div class="instructions-card">
+        <h2><i class="fas fa-hat-chef"></i> Instructions</h2>
+        <ol class="instructions-list">
+          <li *ngFor="let instruction of recipe.instructions" class="instruction-step">
+            <div class="step-number">{{ instruction.step }}</div>
+            <div class="step-description">{{ instruction.description }}</div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- ========================== TAGS ========================== -->
+      <div class="tags-section" *ngIf="recipe.tags.length > 0">
+        <h3>Tags:</h3>
+        <div class="tags-list">
+          <span class="tag" *ngFor="let tag of recipe.tags">{{ tag }}</span>
+        </div>
+      </div>
+
+      <!-- ========================== REVIEWS ========================== -->
+      <app-review-list [recipeId]="recipe._id!"></app-review-list>
+
+    </div> <!-- container ends -->
+
+  </div> <!-- recipe-content ends -->
+
+</div> <!-- recipe-detail-container ends -->
+
+<app-footer></app-footer>

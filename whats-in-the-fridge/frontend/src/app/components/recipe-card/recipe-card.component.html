@@ -1,0 +1,56 @@
+<div class="recipe-card">
+
+  <!-- CLICKABLE AREA -->
+  <div class="recipe-click-zone" (click)="viewDetails()">
+
+    <div class="recipe-image">
+      <img 
+        *ngIf="hasValidImage"
+        [src]="recipe.image"
+        [alt]="recipe.title"
+        (error)="recipe.image = 'https://via.placeholder.com/800x600/667eea/ffffff?text=Recipe'"
+      >
+      <div *ngIf="!hasValidImage" class="image-placeholder">
+        <i class="fas fa-utensils fa-2x"></i>
+        <p>{{ recipe.title }}</p>
+      </div>
+      <span class="difficulty-badge" [class]="recipe.difficulty.toLowerCase()">
+        {{ recipe.difficulty }}
+      </span>
+    </div>
+
+    <div class="recipe-content">
+      <h3 class="recipe-title">{{ recipe.title }}</h3>
+      <p class="recipe-description">{{ recipe.description }}</p>
+
+      <div class="recipe-meta">
+        <span class="meta-item">
+          <i class="fas fa-clock"></i> {{ recipe.cookingTime + recipe.preparationTime }} min
+        </span>
+        <span class="meta-item">
+          <i class="fas fa-utensils"></i> {{ recipe.servings }} servings
+        </span>
+        <span class="meta-item">
+          <i class="fas fa-folder"></i> {{ recipe.category }}
+        </span>
+      </div>
+
+      <div class="recipe-tags">
+        <span class="tag" *ngFor="let tag of recipe.tags.slice(0,3)">
+          {{ tag }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAVORITE BUTTON -->
+  <button 
+    *ngIf="showFavoriteButton"
+    class="favorite-btn"
+    (click)="onFavoriteClick($event)"
+  >
+    <i class="fas" [ngClass]="isFavorited ? 'fa-heart' : 'fa-heart-broken'"></i>
+    {{ isFavorited ? 'Favorited' : 'Save to Favorites' }}
+  </button>
+
+</div>

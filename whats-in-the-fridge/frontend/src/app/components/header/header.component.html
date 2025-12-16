@@ -1,0 +1,48 @@
+<header class="header">
+  <div class="container">
+    <div class="logo" (click)="navigateTo('/home')">
+      <img src="/logo7.png" alt="What's in the Fridge Logo">
+    </div>
+
+    <nav class="nav" *ngIf="authService.isLoggedIn()">
+      <a routerLink="/home" routerLinkActive="active">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a routerLink="/favorites" routerLinkActive="active">
+        <i class="fas fa-heart"></i> Favorites
+      </a>
+      <a routerLink="/community" routerLinkActive="active">
+        <i class="fas fa-users"></i> Community
+      </a>
+
+      <a 
+        *ngIf="currentUser?.role === 'admin'" 
+        routerLink="/admin" 
+        routerLinkActive="active"
+        class="admin-link"
+      >
+        <i class="fas fa-cog"></i> Admin
+      </a>
+      
+      <div class="user-menu">
+        <button class="user-btn" (click)="toggleMenu()">
+          <i class="fas fa-user"></i> {{ currentUser?.pseudo }}
+        </button>
+        
+        <div class="dropdown" *ngIf="showMenu">
+          <a (click)="navigateTo('/profile')"><i class="fas fa-id-badge"></i> Profile</a>
+          <a (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="auth-buttons" *ngIf="!authService.isLoggedIn()">
+      <button class="btn-secondary" (click)="navigateTo('/login')">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+      <button class="btn-primary" (click)="navigateTo('/register')">
+        <i class="fas fa-user-plus"></i> Register
+      </button>
+    </div>
+  </div>
+</header>

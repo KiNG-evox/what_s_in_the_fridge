@@ -1,0 +1,117 @@
+<app-header></app-header>
+
+<div class="favorites-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>My Favorite Recipes <i class="fas fa-heart"></i></h1>
+      <p>All your saved recipes in one place</p>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <app-loader></app-loader>
+      <p>Loading your favorites...</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" *ngIf="errorMessage && !isLoading">
+      <p><i class="fas fa-exclamation-triangle"></i> {{ errorMessage }}</p>
+      <button class="btn-retry" (click)="ngOnInit()">Try Again</button>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && favorites.length === 0 && !errorMessage">
+      <div class="empty-icon"><i class="fas fa-frown"></i></div>
+      <h2>No favorites yet</h2>
+      <p>Start adding recipes to your favorites!</p>
+      <button class="btn-home" routerLink="/home">
+        Generate Recipes
+      </button>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="search-filter-section" *ngIf="!isLoading && favorites.length > 0">
+      <div class="search-bar">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearchChange()"
+          placeholder="🔍 Search your favorites by title, description, or tags..."
+          class="search-input"
+        />
+      </div>
+
+      <div class="filters-container">
+        <div class="filter-group">
+          <label>Category:</label>
+          <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="filter-select">
+            <option value="">All Categories</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Difficulty:</label>
+          <select [(ngModel)]="selectedDifficulty" (change)="onDifficultyChange()" class="filter-select">
+            <option value="">All Levels</option>
+            <option *ngFor="let diff of difficulties" [value]="diff">{{ diff }}</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Min Rating:</label>
+          <select [(ngModel)]="selectedRating" (change)="onRatingChange()" class="filter-select">
+            <option [value]="0">All Ratings</option>
+            <option *ngFor="let rating of ratings" [value]="rating">★ {{ rating }}+</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Sort By:</label>
+          <select [(ngModel)]="sortBy" (change)="onSortChange()" class="filter-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="rating">Highest Rated</option>
+            <option value="title">Alphabetical</option>
+            <option value="prepTime">Prep Time</option>
+          </select>
+        </div>
+
+        <button class="btn-clear-filters" (click)="clearFilters()">Clear Filters</button>
+      </div>
+
+      <div class="results-count">
+        <p>Showing <strong>{{ filteredFavorites.length }}</strong> of <strong>{{ favorites.length }}</strong> favorites</p>
+      </div>
+    </div>
+
+    <!-- Favorites Grid -->
+    <div class="favorites-grid" *ngIf="!isLoading && filteredFavorites.length > 0">
+      <div class="favorite-item" *ngFor="let favorite of filteredFavorites">
+        <app-recipe-card
+          [recipe]="getRecipe(favorite)"
+          [showFavoriteButton]="false"
+        ></app-recipe-card>
+        
+        <div class="favorite-actions">
+          <button class="btn-remove" (click)="removeFromFavorites(favorite)">
+            <i class="fas fa-trash-alt"></i> Remove from Favorites
+          </button>
+          <div class="favorite-date">
+            Added on {{ favorite.createdAt | date: 'MMM d, y' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results State -->
+    <div class="empty-state" *ngIf="!isLoading && favorites.length > 0 && filteredFavorites.length === 0">
+      <div class="empty-icon"><i class="fas fa-search"></i></div>
+      <h2>No favorites match your filters</h2>
+      <p>Try adjusting your search or filters</p>
+      <button class="btn-clear-filters" (click)="clearFilters()">Clear All Filters</button>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

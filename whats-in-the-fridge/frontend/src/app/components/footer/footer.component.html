@@ -1,0 +1,53 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+
+      <!-- Logo & Description -->
+      <div class="footer-section">
+        <div class="logo" (click)="navigateTo('/home')">
+          <img src="/logo7.png" alt="What's in the Fridge Logo">
+        </div>
+        <p>
+          AI-powered recipe generator that helps you create amazing meals from your available ingredients.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a routerLink="/home">Home</a></li>
+          <li><a routerLink="/favorites">Favorites</a></li>
+          <li><a routerLink="/profile">Profile</a></li>
+        </ul>
+      </div>
+
+      <!-- Support Links -->
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="mailto:support@fridge.com">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-section">
+        <h4>Connect</h4>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} What's in the Fridge. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

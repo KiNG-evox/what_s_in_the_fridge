@@ -1,0 +1,136 @@
+.review-form {
+  background: #ffffff; /* white form background */
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 2px solid rgba(17, 24, 39, 0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.review-form h3 {
+  margin: 0 0 20px 0;
+  color: #19236a; /* deep blue */
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.rating-section {
+  margin-bottom: 20px;
+}
+
+.rating-section label {
+  display: block;
+  font-weight: 600;
+  color: #19236a; /* deep blue */
+  margin-bottom: 10px;
+}
+
+.stars {
+  display: flex;
+  gap: 5px;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.star {
+  cursor: pointer;
+  transition: all 0.2s;
+  filter: grayscale(100%);
+}
+
+.star.filled {
+  filter: grayscale(0%);
+  transform: scale(1.1);
+  text-shadow: 0 2px 8px rgba(255, 215, 0, 0.5); /* gold glow */
+  color: #FFD700; /* gold */
+}
+
+.rating-text {
+  color: #FFD700; /* gold */
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-shadow: 0 1px 2px rgba(17, 24, 39, 0.1);
+}
+
+.comment-section {
+  margin-bottom: 20px;
+}
+
+.comment-section label {
+  display: block;
+  font-weight: 600;
+  color: #19236a; /* deep blue */
+  margin-bottom: 10px;
+}
+
+.comment-section textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+  color: #19236a;
+  background: #f7f9ff;
+}
+
+.comment-section textarea:focus {
+  outline: none;
+  border-color: #FFD700;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+  background: #ffffff;
+}
+
+.comment-section textarea:disabled {
+  background: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 5px;
+}
+
+.error-message {
+  background: rgba(255, 0, 0, 0.1);
+  color: #b80000;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background: #FFD700; /* gold */
+  color: #19236a; /* deep blue text */
+  border: 2px solid #FFD700;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #e6c200; /* darker gold on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 215, 0, 0.5);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}

@@ -1,0 +1,31 @@
+<div class="review-list">
+  <h2>Reviews ({{ reviews.length }})</h2>
+
+  <!-- Review Form -->
+  <div class="review-form-wrapper">
+    <app-review-form 
+      [recipeId]="recipeId"
+      (reviewAdded)="onReviewAdded()"
+    ></app-review-form>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <app-loader></app-loader>
+    <p>Loading reviews...</p>
+  </div>
+
+  <!-- Reviews -->
+  <div class="reviews-container" *ngIf="!isLoading && reviews.length > 0">
+    <app-review-item
+      *ngFor="let review of reviews"
+      [review]="review"
+      (deleteClick)="onReviewDeleted($event)"
+    ></app-review-item>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && reviews.length === 0">
+    <p>No reviews yet. Be the first to review this recipe!</p>
+  </div>
+</div>

@@ -1,0 +1,332 @@
+<app-header></app-header>
+
+<div class="community-container">
+
+  <!-- Header + Create Button -->
+  <div class="community-header">
+    <h1>Recipe Community</h1>
+    <button class="btn-primary" (click)="toggleCreateForm()">
+      {{ showCreateForm ? 'Cancel' : '+ Create Recipe' }}
+    </button>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section" *ngIf="!showCreateForm">
+    <div class="search-bar">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearchChange()"
+        placeholder="🔍 Search recipes by title, description, or tags..."
+        class="search-input"
+      />
+    </div>
+
+    <div class="filters-container">
+      <div class="filter-group">
+        <label>Category:</label>
+        <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="filter-select">
+          <option value="">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Difficulty:</label>
+        <select [(ngModel)]="selectedDifficulty" (change)="onDifficultyChange()" class="filter-select">
+          <option value="">All Levels</option>
+          <option *ngFor="let diff of difficulties" [value]="diff">{{ diff }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Min Rating:</label>
+        <select [(ngModel)]="selectedRating" (change)="onRatingChange()" class="filter-select">
+          <option [value]="0">All Ratings</option>
+          <option *ngFor="let rating of ratings" [value]="rating">★ {{ rating }}+</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Sort By:</label>
+        <select [(ngModel)]="sortBy" (change)="onSortChange()" class="filter-select">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="rating">Highest Rated</option>
+          <option value="title">Alphabetical</option>
+          <option value="prepTime">Prep Time</option>
+        </select>
+      </div>
+
+      <button class="btn-clear-filters" (click)="clearFilters()">Clear Filters</button>
+    </div>
+
+    <div class="results-count">
+      <p>Showing <strong>{{ filteredRecipes.length }}</strong> of <strong>{{ recipes.length }}</strong> recipes</p>
+    </div>
+  </div>
+
+  <!-- Create/Edit Recipe Form -->
+  <div class="recipe-form-container" *ngIf="showCreateForm && recipeForm">
+    <h2>{{ isEditing ? 'Edit Recipe' : 'Create New Recipe' }}</h2>
+    <form [formGroup]="recipeForm" (ngSubmit)="submitRecipe()" class="recipe-form">
+
+      <!-- Title -->
+      <div class="form-group">
+        <label>Title * <small>(3-100 characters)</small></label>
+        <input formControlName="title" placeholder="Enter recipe title" />
+        <span class="error" *ngIf="recipeForm.get('title')?.invalid && recipeForm.get('title')?.touched">
+          Title is required (3-100 characters)
+        </span>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label>Description * <small>(max 500 characters)</small></label>
+        <textarea formControlName="description" placeholder="Describe your recipe" rows="3"></textarea>
+        <span class="error" *ngIf="recipeForm.get('description')?.invalid && recipeForm.get('description')?.touched">
+          Description is required (max 500 characters)
+        </span>
+      </div>
+
+      <!-- Category & Difficulty -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category *</label>
+          <select formControlName="category">
+            <option value="">Select a category</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Snack">Snack</option>
+            <option value="Beverage">Beverage</option>
+          </select>
+          <span class="error" *ngIf="recipeForm.get('category')?.invalid && recipeForm.get('category')?.touched">
+            Category is required
+          </span>
+        </div>
+        <div class="form-group">
+          <label>Difficulty *</label>
+          <select formControlName="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Servings & Times -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Servings *</label>
+          <input formControlName="servings" type="number" min="1" placeholder="Number of servings" />
+        </div>
+        <div class="form-group">
+          <label>Prep Time (min) *</label>
+          <input formControlName="preparationTime" type="number" min="1" placeholder="Preparation time" />
+        </div>
+        <div class="form-group">
+          <label>Cook Time (min) *</label>
+          <input formControlName="cookingTime" type="number" min="1" placeholder="Cooking time" />
+        </div>
+      </div>
+
+      <!-- Ingredients -->
+      <div class="ingredients-section" *ngIf="ingredients">
+        <label>Ingredients *</label>
+        <div formArrayName="ingredients">
+          <div *ngFor="let ingredient of ingredients.controls; let i = index" 
+               [formGroupName]="i" 
+               class="ingredient-row">
+            <input formControlName="name" placeholder="Ingredient name" class="ingredient-name" />
+            <input formControlName="quantity" type="number" placeholder="Qty" class="ingredient-qty" />
+            <select formControlName="unit" class="ingredient-unit">
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="l">l</option>
+              <option value="cup">cup</option>
+              <option value="tbsp">tbsp</option>
+              <option value="tsp">tsp</option>
+              <option value="pcs">pcs</option>
+              <option value="pinch">pinch</option>
+            </select>
+            <button type="button" class="btn-remove" (click)="removeIngredient(i)" *ngIf="ingredients.length > 1">Remove</button>
+          </div>
+        </div>
+        <button type="button" class="btn-add" (click)="addIngredient()">+ Add Ingredient</button>
+      </div>
+
+      <!-- Instructions -->
+      <div class="instructions-section" *ngIf="instructions">
+        <label>Instructions *</label>
+        <div formArrayName="instructions">
+          <div *ngFor="let instruction of instructions.controls; let i = index" 
+               [formGroupName]="i" 
+               class="instruction-row">
+            <span class="step-number">Step {{ instruction.get('step')?.value }}</span>
+            <textarea formControlName="description" placeholder="Describe this step..." rows="2" class="instruction-description"></textarea>
+            <button type="button" class="btn-remove" (click)="removeInstruction(i)" *ngIf="instructions.length > 1">Remove</button>
+          </div>
+        </div>
+        <button type="button" class="btn-add" (click)="addInstruction()">+ Add Step</button>
+      </div>
+
+      <!-- Tags -->
+      <div class="form-group">
+        <label>Tags <small>(comma-separated)</small></label>
+        <input formControlName="tags" placeholder="e.g., vegetarian, quick, healthy" />
+        <span class="help-text">Separate tags with commas</span>
+      </div>
+
+      <!-- Nutritional Info -->
+      <div class="nutritional-section" formGroupName="nutritionalInfo">
+        <label>Nutritional Information <small>(optional)</small></label>
+        <div class="form-row">
+          <div class="form-group">
+            <input formControlName="calories" type="number" placeholder="Calories" />
+          </div>
+          <div class="form-group">
+            <input formControlName="protein" type="number" placeholder="Protein (g)" />
+          </div>
+          <div class="form-group">
+            <input formControlName="carbs" type="number" placeholder="Carbs (g)" />
+          </div>
+          <div class="form-group">
+            <input formControlName="fat" type="number" placeholder="Fat (g)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="form-group">
+        <label>Recipe Image</label>
+        <input type="file" (change)="onFileChange($event)" accept="image/*" />
+        <div class="image-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Preview" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="!recipeForm.valid">{{ isEditing ? 'Update Recipe' : 'Create Recipe' }}</button>
+        <button type="button" class="btn-secondary" (click)="toggleCreateForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Recipes Grid -->
+  <div class="recipes-grid" *ngIf="!showCreateForm">
+    <div class="recipe-card" *ngFor="let recipe of filteredRecipes">
+      <div class="recipe-image" (click)="viewRecipeDetails(recipe)">
+        <img [src]="getImageUrl(recipe.image)" [alt]="recipe.title" />
+        <span class="difficulty-badge" [ngClass]="recipe.difficulty.toLowerCase()">{{ recipe.difficulty }}</span>
+      </div>
+
+      <div class="recipe-content">
+        <h3 (click)="viewRecipeDetails(recipe)">{{ recipe.title }}</h3>
+
+        <div class="source-badge" [ngClass]="recipe.generatedByAI ? 'ai' : 'human'">
+          {{ recipe.generatedByAI ? 'AI' : 'Human' }}
+        </div>
+
+        <p class="recipe-description">{{ recipe.description }}</p>
+        <div class="recipe-meta">
+          <span class="category">{{ recipe.category }}</span>
+          <span class="time">⏱️ {{ getTotalTime(recipe) }} min</span>
+          <span class="servings">🍽️ {{ recipe.servings }}</span>
+        </div>
+
+        <div class="recipe-rating">
+          <span class="stars">★ {{ recipe.averageRating?.toFixed(1) || '0.0' }}</span>
+          <span class="reviews-count">({{ recipe.totalReviews || 0 }} reviews)</span>
+        </div>
+
+        <div class="recipe-tags" *ngIf="recipe.tags && recipe.tags.length > 0">
+          <span class="tag" *ngFor="let tag of recipe.tags.slice(0,3)">{{ tag }}</span>
+        </div>
+
+        <div class="recipe-author">
+          <small>By {{ recipe.requestedBy?.name || 'Unknown' }}</small>
+        </div>
+
+        <div class="recipe-actions" *ngIf="canEditRecipe(recipe)">
+          <button class="btn-edit" (click)="editRecipe(recipe)">Edit</button>
+          <button class="btn-delete" (click)="deleteRecipe(recipe._id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipe Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedRecipe" (click)="closeRecipeDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeRecipeDetails()">×</button>
+
+      <div class="recipe-details">
+        <h2>{{ selectedRecipe.title }}</h2>
+        <div class="recipe-meta-large">
+          <span class="category-badge">{{ selectedRecipe.category }}</span>
+          <span class="difficulty-badge-large" [ngClass]="selectedRecipe.difficulty.toLowerCase()">{{ selectedRecipe.difficulty }}</span>
+          <span class="servings">🍽️ {{ selectedRecipe.servings }} servings</span>
+          <span class="time">⏱️ Prep: {{ selectedRecipe.preparationTime }}min | Cook: {{ selectedRecipe.cookingTime }}min</span>
+        </div>
+
+        <div class="recipe-image-large" *ngIf="selectedRecipe.image">
+          <img [src]="getImageUrl(selectedRecipe.image)" [alt]="selectedRecipe.title" />
+        </div>
+
+        <p class="recipe-description-large">{{ selectedRecipe.description }}</p>
+        <small class="author-info">Created by {{ selectedRecipe.requestedBy?.name || 'Unknown' }}</small>
+
+        <div class="recipe-tags-large" *ngIf="selectedRecipe.tags && selectedRecipe.tags.length > 0">
+          <span class="tag" *ngFor="let tag of selectedRecipe.tags">{{ tag }}</span>
+        </div>
+
+        <div class="nutritional-info" *ngIf="selectedRecipe.nutritionalInfo && 
+                                            (selectedRecipe.nutritionalInfo.calories || selectedRecipe.nutritionalInfo.protein || 
+                                             selectedRecipe.nutritionalInfo.carbs || selectedRecipe.nutritionalInfo.fat)">
+          <h3>Nutritional Information (per serving)</h3>
+          <div class="nutrition-grid">
+            <div class="nutrition-item" *ngIf="selectedRecipe.nutritionalInfo.calories">
+              <strong>Calories:</strong> {{ selectedRecipe.nutritionalInfo.calories }}
+            </div>
+            <div class="nutrition-item" *ngIf="selectedRecipe.nutritionalInfo.protein">
+              <strong>Protein:</strong> {{ selectedRecipe.nutritionalInfo.protein }}g
+            </div>
+            <div class="nutrition-item" *ngIf="selectedRecipe.nutritionalInfo.carbs">
+              <strong>Carbs:</strong> {{ selectedRecipe.nutritionalInfo.carbs }}g
+            </div>
+            <div class="nutrition-item" *ngIf="selectedRecipe.nutritionalInfo.fat">
+              <strong>Fat:</strong> {{ selectedRecipe.nutritionalInfo.fat }}g
+            </div>
+          </div>
+        </div>
+
+        <div class="ingredients-section-detail">
+          <h3>Ingredients</h3>
+          <ul>
+            <li *ngFor="let ingredient of selectedRecipe.ingredients">
+              <strong>{{ ingredient.quantity }} {{ ingredient.unit }}</strong> {{ ingredient.name }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="instructions-section">
+          <h3>Instructions</h3>
+          <ol>
+            <li *ngFor="let instruction of selectedRecipe.instructions">{{ instruction.description }}</li>
+          </ol>
+        </div>
+
+        <div class="reviews-section">
+          <app-review-list [recipeId]="selectedRecipe._id"></app-review-list>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

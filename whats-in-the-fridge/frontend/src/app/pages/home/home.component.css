@@ -1,0 +1,308 @@
+/* ============================================
+   HOME PAGE CONTAINER
+============================================ */
+.home-container {
+  background: #ffffff;
+  padding-bottom: 60px;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #060a29;
+}
+
+/* ============================================
+   HERO SECTION
+============================================ */
+.hero-section {
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #19236a; /* navy blue */
+  margin-bottom: 10px;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.25); /* subtle gold glow */
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  color: #4a4a4a;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ============================================
+   GENERATOR CARD
+============================================ */
+.generator-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.generator-card {
+  background: #ffffff;
+  color: #000428;
+  padding: 40px;
+  border-radius: 14px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.generator-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.generator-card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+  font-weight: 700;
+  color: #19236a;
+}
+
+.generator-card .hint {
+  color: #4a5370;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* INPUT */
+.ingredient-input {
+  width: 100%;
+  border: 2px solid #ccd6f5;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 0.95rem;
+  resize: none;
+  outline: none;
+  background: #f7f9ff;
+  color: #19236a;
+  transition: all 0.3s ease;
+}
+
+.ingredient-input::placeholder {
+  color: #8894b6;
+}
+
+.ingredient-input:focus {
+  border-color: #FFD700; /* gold */
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+  background: #ffffff;
+}
+
+/* BUTTON */
+.generate-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  background: #FFD700; /* gold */
+  color: #000428;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #FFD700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.generate-btn:hover {
+  background: #e6c200;
+  border-color: #e6c200;
+  transform: translateY(-2px);
+}
+
+.generate-btn:disabled {
+  background: #ffd966;
+  border-color: #ffd966;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ERROR MESSAGE */
+.error-message {
+  margin-top: 14px;
+  color: #b80000;
+  background: rgba(255, 0, 0, 0.15);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 0, 0, 0.25);
+  font-weight: 500;
+}
+
+/* ============================================
+   GENERATED RECIPES
+============================================ */
+.recipes-section {
+  margin-top: 60px;
+  padding: 0 20px;
+  color: #000428;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+  padding-bottom: 12px;
+  position: relative;
+  color: #FFD700; /* gold */
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: #FFD700; /* gold underline */
+  border-radius: 2px;
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+/* ============================================
+   HOW IT WORKS
+============================================ */
+.how-it-works {
+  margin-top: 80px;
+  padding: 60px 20px;
+  background: #000428; /* fallback */
+  background: -webkit-linear-gradient(to right, #004e92, #000428);
+  background: linear-gradient(to right, #004e92, #000428);
+  text-align: center;
+  border-top: 2px solid rgba(255, 215, 0, 0.15);
+}
+
+.how-it-works h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #FFD700; /* gold */
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.step {
+  max-width: 260px;
+  background: #ffffff;
+  color: #19236a;
+  padding: 30px 20px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.step-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  color: #FFD700; /* gold */
+}
+
+.step h3 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #FFD700; /* gold */
+}
+
+.step p {
+  font-size: 0.95rem;
+  color: #4a5370;
+  line-height: 1.6;
+}
+
+/* ============================================
+   RESPONSIVE FIXES
+============================================ */
+
+/* Tablets & up to medium screens */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 40px 15px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .generator-section {
+    flex-direction: column;
+    padding: 0 15px;
+  }
+
+  .generator-card {
+    padding: 24px 18px;
+    max-width: 100%;
+  }
+
+  .recipes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    gap: 20px;
+  }
+
+  .step {
+    max-width: 100%;
+  }
+}
+
+/* Phones (super important) */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .generator-card {
+    padding: 20px 15px;
+    border-radius: 10px;
+  }
+
+  .ingredient-input {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+
+  .generate-btn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .how-it-works {
+    padding: 40px 15px;
+  }
+
+  .step {
+    padding: 22px 15px;
+  }
+}
+

@@ -1,0 +1,349 @@
+/* ====== Admin Container ====== */
+.admin-container {
+  min-height: 100vh;
+  background: #ffffff; /* same as home page */
+  padding: 20px;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #060a29;
+}
+
+/* ====== Main Container ====== */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ====== Header ====== */
+.admin-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  color: #19236a; /* navy blue */
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.25); /* subtle glow */
+}
+
+.admin-header p {
+  color: #4a4a4a;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ====== Stats Grid ====== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+  border-color: #FFD700;
+}
+
+.stat-icon {
+  font-size: 2.2rem;
+  background: linear-gradient(135deg, #19236a 0%, #060a29 100%);
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #FFD700;
+  color: #FFD700;
+  box-shadow: 0 3px 6px rgba(255, 215, 0, 0.2);
+}
+
+.stat-info h3 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: #19236a;
+  font-weight: 700;
+}
+
+.stat-info p {
+  margin: 0;
+  color: #4a4a4a;
+  font-size: 0.9rem;
+}
+
+/* ====== Tabs ====== */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #19236a;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.tab-btn.active {
+  background: #FFD700;
+  color: #060a29;
+  border-color: #FFD700;
+  box-shadow: 0 3px 6px rgba(255, 215, 0, 0.3);
+}
+
+/* ====== Loading State ====== */
+.loading-state {
+  text-align: center;
+  padding: 40px 15px;
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+/* ====== Tab Content ====== */
+.tab-content {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+/* ====== Tables ====== */
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: #19236a;
+}
+
+.data-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #FFD700;
+  border-bottom: 2px solid #FFD700;
+}
+
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #060a29;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(255, 215, 0, 0.05);
+}
+
+/* ====== User Cells ====== */
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #19236a 0%, #060a29 100%);
+  color: #FFD700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border: 2px solid #FFD700;
+  font-size: 0.85rem;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #19236a;
+  font-size: 0.9rem;
+}
+
+.user-pseudo {
+  font-size: 0.8rem;
+  color: #4a4a4a;
+}
+
+/* ====== Roles ====== */
+.role-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-badge.admin {
+  background: #19236a;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+}
+
+.role-badge.user {
+  background: #FFD700;
+  color: #060a29;
+  border: 1px solid #19236a;
+}
+
+/* ====== Buttons ====== */
+.btn-delete {
+  padding: 6px 12px;
+  background: #e60000;
+  color: #ffffff;
+  border: 2px solid #e60000;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background: #b80000;
+  border-color: #b80000;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(255, 0, 0, 0.3);
+}
+
+.btn-delete:disabled {
+  background: #ffd966;
+  border-color: #ffd966;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ====== Recipes Grid ====== */
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.recipe-admin-card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(25, 35, 106, 0.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.recipe-admin-card:hover {
+  transform: translateY(-4px);
+  border-color: #FFD700;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+.recipe-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.recipe-info {
+  padding: 15px;
+}
+
+.recipe-info h3 {
+  font-size: 1rem;
+  margin: 0 0 8px 0;
+  color: #19236a;
+  font-weight: 600;
+}
+
+.recipe-meta {
+  color: #4a5370;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.recipe-info .btn-delete {
+  width: 100%;
+  font-size: 0.85rem;
+}
+
+/* ====== Empty States ====== */
+.empty-state {
+  text-align: center;
+  padding: 40px 15px;
+  color: #4a5370;
+  background: rgba(255, 215, 0, 0.05);
+  border-radius: 12px;
+  border: 2px dashed rgba(25, 35, 106, 0.2);
+}
+
+.empty-state p {
+  font-size: 1rem;
+  color: #19236a;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .admin-header h1 {
+    font-size: 2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .data-table {
+    font-size: 0.85rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 8px;
+  }
+
+  .recipes-grid {
+    grid-template-columns: 1fr;
+  }
+}
