@@ -1,16 +1,239 @@
-import { TestBed } from '@angular/core/testing';
-
-import { FavoriteService } from './favorite.service';
-
-describe('FavoriteService', () => {
-  let service: FavoriteService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(FavoriteService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+[{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "2459",
+	"severity": 8,
+	"message": "Module '\"./favorite.service\"' declares 'FavoriteService' locally, but it is not exported.",
+	"source": "ts",
+	"startLineNumber": 3,
+	"startColumn": 10,
+	"endLineNumber": 3,
+	"endColumn": 25,
+	"relatedInformation": [
+		{
+			"startLineNumber": 3,
+			"startColumn": 10,
+			"endLineNumber": 3,
+			"endColumn": 25,
+			"message": "'FavoriteService' is declared here.",
+			"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts"
+		}
+	],
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'response' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 46,
+	"startColumn": 57,
+	"endLineNumber": 46,
+	"endColumn": 65,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'response' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 67,
+	"startColumn": 50,
+	"endLineNumber": 67,
+	"endColumn": 58,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'error' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 81,
+	"startColumn": 9,
+	"endLineNumber": 81,
+	"endColumn": 14,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'error' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 95,
+	"startColumn": 9,
+	"endLineNumber": 95,
+	"endColumn": 14,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'response' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 139,
+	"startColumn": 50,
+	"endLineNumber": 139,
+	"endColumn": 58,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'response' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 153,
+	"startColumn": 50,
+	"endLineNumber": 153,
+	"endColumn": 58,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'error' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 166,
+	"startColumn": 9,
+	"endLineNumber": 166,
+	"endColumn": 14,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'response' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 181,
+	"startColumn": 57,
+	"endLineNumber": 181,
+	"endColumn": 65,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'error' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 196,
+	"startColumn": 9,
+	"endLineNumber": 196,
+	"endColumn": 14,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'error' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 210,
+	"startColumn": 9,
+	"endLineNumber": 210,
+	"endColumn": 14,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'response' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 229,
+	"startColumn": 57,
+	"endLineNumber": 229,
+	"endColumn": 65,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'response' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 247,
+	"startColumn": 57,
+	"endLineNumber": 247,
+	"endColumn": 65,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'error' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 262,
+	"startColumn": 9,
+	"endLineNumber": 262,
+	"endColumn": 14,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'fav' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 356,
+	"startColumn": 27,
+	"endLineNumber": 356,
+	"endColumn": 30,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'fav' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 363,
+	"startColumn": 27,
+	"endLineNumber": 363,
+	"endColumn": 30,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'fav' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 370,
+	"startColumn": 27,
+	"endLineNumber": 370,
+	"endColumn": 30,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'fav' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 377,
+	"startColumn": 27,
+	"endLineNumber": 377,
+	"endColumn": 30,
+	"origin": "extHost1"
+},{
+	"resource": "/Users/karimalahssini/Documents/HighTech/PFE Project/repo/whats-in-the-fridge/frontend/src/app/services/favorite.service.ts",
+	"owner": "typescript",
+	"code": "7006",
+	"severity": 8,
+	"message": "Parameter 'favorites' implicitly has an 'any' type.",
+	"source": "ts",
+	"startLineNumber": 507,
+	"startColumn": 50,
+	"endLineNumber": 507,
+	"endColumn": 59,
+	"origin": "extHost1"
+}]

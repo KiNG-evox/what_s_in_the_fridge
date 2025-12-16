@@ -1,17 +1,40 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import { AuthService } from '../services/auth.service';
 
-import { authGuard } from './auth.guard';
-
-describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+describe('AuthGuard', () => {
+  let guard: AuthGuard;
+  let authServiceMock: any;
+  let routerMock: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    authServiceMock = {
+      isLoggedIn: jasmine.createSpy('isLoggedIn')
+    };
+    routerMock = {
+      navigate: jasmine.createSpy('navigate')
+    };
+
+    TestBed.configureTestingModule({
+      providers: [
+        AuthGuard,
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: Router, useValue: routerMock }
+      ]
+    });
+
+    guard = TestBed.inject(AuthGuard);
   });
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+  it('should allow access if user is logged in', () => {
+    authServiceMock.isLoggedIn.and.returnValue(true);
+    expect(guard.canActivate()).toBe(true);
+  });
+
+  it('should deny access and navigate if user is not logged in', () => {
+    authServiceMock.isLoggedIn.and.returnValue(false);
+    expect(guard.canActivate()).toBe(false);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/login']);
   });
 });
