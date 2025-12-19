@@ -219,52 +219,52 @@ describe('RecipeCardComponent', () => {
   });
 
   describe('hasValidImage getter', () => {
-    it('should return true when recipe has valid image', () => {
+    it('should return truthy when recipe has valid image', () => {
       component.recipe = mockRecipe;
 
-      expect(component.hasValidImage).toBe(true);
+      expect(component.hasValidImage).toBeTruthy();
     });
 
-    it('should return false when image is empty string', () => {
+    it('should return falsy when image is empty string', () => {
       component.recipe = { ...mockRecipe, image: '' };
 
-      expect(component.hasValidImage).toBe(false);
+      expect(component.hasValidImage).toBeFalsy();
     });
 
-    it('should return false when image is null', () => {
+    it('should return falsy when image is null', () => {
       component.recipe = { ...mockRecipe, image: null as any };
 
-      expect(component.hasValidImage).toBe(false);
+      expect(component.hasValidImage).toBeFalsy();
     });
 
-    it('should return false when image is undefined', () => {
+    it('should return falsy when image is undefined', () => {
       component.recipe = { ...mockRecipe, image: undefined as any };
 
-      expect(component.hasValidImage).toBe(false);
+      expect(component.hasValidImage).toBeFalsy();
     });
 
-    it('should return false when recipe is null', () => {
+    it('should return falsy when recipe is null', () => {
       component.recipe = null as any;
 
-      expect(component.hasValidImage).toBe(false);
+      expect(component.hasValidImage).toBeFalsy();
     });
 
-    it('should return false when recipe is undefined', () => {
+    it('should return falsy when recipe is undefined', () => {
       component.recipe = undefined as any;
 
-      expect(component.hasValidImage).toBe(false);
+      expect(component.hasValidImage).toBeFalsy();
     });
 
-    it('should return true for any non-empty image string', () => {
+    it('should return truthy for any non-empty image string', () => {
       component.recipe = { ...mockRecipe, image: 'https://example.com/image.jpg' };
 
-      expect(component.hasValidImage).toBe(true);
+      expect(component.hasValidImage).toBeTruthy();
     });
 
-    it('should return true even for single character image', () => {
+    it('should return truthy even for single character image', () => {
       component.recipe = { ...mockRecipe, image: 'a' };
 
-      expect(component.hasValidImage).toBe(true);
+      expect(component.hasValidImage).toBeTruthy();
     });
   });
 

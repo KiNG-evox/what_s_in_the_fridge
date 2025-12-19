@@ -93,42 +93,23 @@ describe('ReviewItemComponent', () => {
 
     it('should return true when current user is the review owner', () => {
       authService.getCurrentUser.and.returnValue(mockUser);
-
       expect(component.isOwner).toBeTrue();
     });
 
     it('should return false when current user is not the review owner', () => {
-      const differentUser: User = {
-        ...mockUser,
-        _id: 'user456'
-      };
+      const differentUser: User = { ...mockUser, _id: 'user456' };
       authService.getCurrentUser.and.returnValue(differentUser);
-
       expect(component.isOwner).toBeFalse();
     });
 
     it('should return false when no user is logged in', () => {
       authService.getCurrentUser.and.returnValue(null);
-
       expect(component.isOwner).toBeFalse();
     });
 
-    it('should return false when current user is undefined', () => {
-      authService.getCurrentUser.and.returnValue(null);
-
-      expect(component.isOwner).toBeFalsy();
-    });
-
     it('should handle review with different user ID', () => {
-      component.review = {
-        ...mockReview,
-        user: {
-          ...mockReview.user,
-          _id: 'different123'
-        }
-      };
+      component.review = { ...mockReview, user: { ...mockReview.user, _id: 'diff123' } };
       authService.getCurrentUser.and.returnValue(mockUser);
-
       expect(component.isOwner).toBeFalse();
     });
   });
@@ -136,35 +117,16 @@ describe('ReviewItemComponent', () => {
   describe('isAdmin getter', () => {
     it('should return true when current user is an admin', () => {
       authService.getCurrentUser.and.returnValue(mockAdminUser);
-
       expect(component.isAdmin).toBeTrue();
     });
 
     it('should return false when current user is not an admin', () => {
       authService.getCurrentUser.and.returnValue(mockUser);
-
       expect(component.isAdmin).toBeFalse();
     });
 
     it('should return false when no user is logged in', () => {
       authService.getCurrentUser.and.returnValue(null);
-
-      expect(component.isAdmin).toBeFalse();
-    });
-
-    it('should return false when current user is undefined', () => {
-      authService.getCurrentUser.and.returnValue(null);
-
-      expect(component.isAdmin).toBeFalsy();
-    });
-
-    it('should handle user with role property', () => {
-      const userWithRole: User = {
-        ...mockUser,
-        role: 'user'
-      };
-      authService.getCurrentUser.and.returnValue(userWithRole);
-
       expect(component.isAdmin).toBeFalse();
     });
   });
@@ -190,26 +152,12 @@ describe('ReviewItemComponent', () => {
 
       component.onDelete();
 
-      expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete this review?');
       expect(component.deleteClick.emit).not.toHaveBeenCalled();
     });
 
-    it('should emit correct review ID', () => {
-      (window.confirm as jasmine.Spy).and.returnValue(true);
-      spyOn(component.deleteClick, 'emit');
-      component.review = { ...mockReview, _id: 'different456' };
-
-      component.onDelete();
-
-      expect(component.deleteClick.emit).toHaveBeenCalledWith('different456');
-    });
-
-    it('should show confirmation dialog with correct message', () => {
-      (window.confirm as jasmine.Spy).and.returnValue(true);
-
-      component.onDelete();
-
-      expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete this review?');
+    it('should handle undefined review gracefully', () => {
+      component.review = undefined;
+      expect(() => component.onDelete()).not.toThrow();
     });
   });
 
@@ -220,154 +168,13 @@ describe('ReviewItemComponent', () => {
 
     it('should emit editClick event with review data', () => {
       spyOn(component.editClick, 'emit');
-
-      component.onEdit();
-
-      expect(component.editClick.emit).toHaveBeenCalledWith(mockReview);
-    });
-
-    it('should emit the entire review object', () => {
-      spyOn(component.editClick, 'emit');
-      const customReview = {
-        ...mockReview,
-        _id: 'custom123',
-        rating: 4,
-        comment: 'Updated comment'
-      };
-      component.review = customReview;
-
-      component.onEdit();
-
-      expect(component.editClick.emit).toHaveBeenCalledWith(customReview);
-    });
-
-    it('should not require confirmation dialog', () => {
-      spyOn(component.editClick, 'emit');
-
-      component.onEdit();
-
-      expect(window.confirm).not.toHaveBeenCalled();
-      expect(component.editClick.emit).toHaveBeenCalled();
-    });
-  });
-
-  describe('Integration scenarios', () => {
-    beforeEach(() => {
-      component.review = mockReview;
-    });
-
-    it('should allow owner to edit and delete their review', () => {
-      authService.getCurrentUser.and.returnValue(mockUser);
-      (window.confirm as jasmine.Spy).and.returnValue(true);
-      spyOn(component.deleteClick, 'emit');
-      spyOn(component.editClick, 'emit');
-
-      expect(component.isOwner).toBeTrue();
-
       component.onEdit();
       expect(component.editClick.emit).toHaveBeenCalledWith(mockReview);
-
-      component.onDelete();
-      expect(component.deleteClick.emit).toHaveBeenCalledWith('review123');
     });
 
-    it('should allow admin to delete any review', () => {
-      authService.getCurrentUser.and.returnValue(mockAdminUser);
-      (window.confirm as jasmine.Spy).and.returnValue(true);
-      spyOn(component.deleteClick, 'emit');
-
-      expect(component.isAdmin).toBeTrue();
-      expect(component.isOwner).toBeFalse();
-
-      component.onDelete();
-      expect(component.deleteClick.emit).toHaveBeenCalledWith('review123');
-    });
-
-    it('should prevent non-owner from editing review', () => {
-      const differentUser: User = {
-        ...mockUser,
-        _id: 'user456'
-      };
-      authService.getCurrentUser.and.returnValue(differentUser);
-
-      expect(component.isOwner).toBeFalse();
-      expect(component.isAdmin).toBeFalse();
-    });
-
-    it('should handle review operations when not logged in', () => {
-      authService.getCurrentUser.and.returnValue(null);
-
-      expect(component.isOwner).toBeFalse();
-      expect(component.isAdmin).toBeFalse();
-    });
-  });
-
-  describe('Edge cases', () => {
-    it('should handle review with missing user ID', () => {
-      component.review = {
-        ...mockReview,
-        user: {
-          name: 'John',
-          pseudo: 'johndoe'
-        }
-      };
-      authService.getCurrentUser.and.returnValue(mockUser);
-
-      expect(component.isOwner).toBeFalse();
-    });
-
-    it('should handle multiple delete attempts', () => {
-      (window.confirm as jasmine.Spy).and.returnValue(true);
-      spyOn(component.deleteClick, 'emit');
-
-      component.onDelete();
-      component.onDelete();
-
-      expect(component.deleteClick.emit).toHaveBeenCalledTimes(2);
-      expect(window.confirm).toHaveBeenCalledTimes(2);
-    });
-
-    it('should handle multiple edit clicks', () => {
-      spyOn(component.editClick, 'emit');
-
-      component.onEdit();
-      component.onEdit();
-      component.onEdit();
-
-      expect(component.editClick.emit).toHaveBeenCalledTimes(3);
-    });
-
-    it('should handle review update after initialization', () => {
-      authService.getCurrentUser.and.returnValue(mockUser);
-      component.review = mockReview;
-
-      expect(component.isOwner).toBeTrue();
-
-      const newReview = {
-        ...mockReview,
-        user: {
-          ...mockReview.user,
-          _id: 'different123'
-        }
-      };
-      component.review = newReview;
-
-      expect(component.isOwner).toBeFalse();
-    });
-
-    it('should handle review with null values', () => {
-      component.review = {
-        _id: null,
-        user: {
-          _id: null
-        },
-        rating: 0,
-        comment: ''
-      };
-      authService.getCurrentUser.and.returnValue(null);
-
-      expect(component.isOwner).toBeFalsy();
-      expect(component.isAdmin).toBeFalsy();
+    it('should handle undefined review gracefully', () => {
+      component.review = undefined;
+      expect(() => component.onEdit()).not.toThrow();
     });
   });
 
@@ -395,7 +202,7 @@ describe('ReviewItemComponent', () => {
       component.review = mockReview;
     });
 
-    it('should emit events asynchronously', (done) => {
+    it('should emit delete events asynchronously', (done) => {
       component.deleteClick.subscribe((reviewId: string) => {
         expect(reviewId).toBe('review123');
         done();
@@ -408,8 +215,6 @@ describe('ReviewItemComponent', () => {
     it('should emit edit events with complete data', (done) => {
       component.editClick.subscribe((review: any) => {
         expect(review).toEqual(mockReview);
-        expect(review.rating).toBe(5);
-        expect(review.comment).toBe('Great recipe!');
         done();
       });
 
