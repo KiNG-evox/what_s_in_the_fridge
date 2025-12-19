@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Toastr animations
+import { CommonModule } from '@angular/common'; // Add this import
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -44,11 +45,12 @@ import { CommunityComponent } from './pages/community/community.component';
   ],
   imports: [
     BrowserModule,
+    CommonModule,             // Add this line - provides ngClass, date pipe, etc.
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule, // Needed for Toastr animations
+    BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-top-right',
