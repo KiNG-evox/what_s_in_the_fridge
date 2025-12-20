@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm ci && npm run build",
+  "outputDirectory": "dist/frontend",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
