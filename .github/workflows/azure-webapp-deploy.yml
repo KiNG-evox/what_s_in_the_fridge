@@ -16,13 +16,15 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write  # Required for OIDC
+      id-token: write   # Required for OIDC
       contents: read
 
     steps:
+    # --------------------
     - name: 📥 Checkout code
       uses: actions/checkout@v4
 
+    # --------------------
     - name: 🟢 Set up Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v4
       with:
@@ -32,6 +34,7 @@ jobs:
           whats-in-the-fridge/frontend/package-lock.json
           whats-in-the-fridge/backEnd/package-lock.json
 
+    # --------------------
     # Build Frontend
     - name: 📦 Install frontend dependencies
       working-directory: ${{ env.WORKING_DIR }}/frontend
@@ -50,11 +53,13 @@ jobs:
         echo "✅ Frontend built successfully"
         ls -la ${{ env.WORKING_DIR }}/frontend/dist/frontend/browser
 
+    # --------------------
     # Prepare Backend
     - name: 📦 Install backend dependencies
       working-directory: ${{ env.WORKING_DIR }}/backEnd
       run: npm ci --omit=dev
 
+    # --------------------
     # Create deployment package
     - name: 📦 Create deployment package
       run: |
@@ -67,24 +72,29 @@ jobs:
         cd deploy
         zip -r ../deployment.zip . -x "*.git*" -x "*node_modules/.cache/*" -x "*.env"
         cd ..
+        echo "✅ Deployment package created"
         ls -lh deployment.zip
 
+    # --------------------
     # Authenticate to Azure via OIDC
     - name: 🔐 Azure Login via OIDC
       uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        allow-no-subscriptions: true
 
+    # Optional: verify login succeeded
+    - name: 🔍 Verify Azure login
+      run: az account show
+
+    # --------------------
     # Deploy to Azure
     - name: 🚀 Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ./deployment.zip
+        slot-name: production  # optional, remove if not using slots
 
+    # --------------------
+    # Deployment Summary
     - name: 🎉 Deployment Summary
       run: |
         echo "✅ Application deployed successfully!"
