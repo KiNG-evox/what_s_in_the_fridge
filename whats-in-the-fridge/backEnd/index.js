@@ -63,7 +63,7 @@ app.use("/api/admin", RouterAdmin);
 
 // Serve Angular static files (Production only)
 if (process.env.NODE_ENV === 'production') {
-  const angularDistPath = path.join(__dirname, '../frontend/dist/frontend/browser');
+  const angularDistPath = path.join(__dirname, 'frontend/dist/frontend/browser');
   
   // Serve static files from Angular build
   app.use(express.static(angularDistPath));
