@@ -1,4 +1,4 @@
-name: Deploy to Azure Web App
+name: Deploy to Azure Web App via OIDC
 
 on:
   push:
@@ -7,14 +7,18 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'whats-in-the-fridge'  # CHANGE THIS to your app name
+  AZURE_WEBAPP_NAME: 'whats-in-the-fridge'
   NODE_VERSION: '20.x'
   WORKING_DIR: './whats-in-the-fridge'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
+    permissions:
+      id-token: write  # Required for OIDC
+      contents: read
+
     steps:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
@@ -54,44 +58,31 @@ jobs:
     # Create deployment package
     - name: 📦 Create deployment package
       run: |
-        echo "🔧 Creating deployment directory..."
         mkdir -p deploy
-        
-        echo "📁 Copying backend files..."
         cp -r ${{ env.WORKING_DIR }}/backEnd/* deploy/
-        
-        echo "🎨 Creating frontend directory structure..."
         mkdir -p deploy/frontend/dist/frontend
-        
-        echo "🚀 Copying frontend build..."
         cp -r ${{ env.WORKING_DIR }}/frontend/dist/frontend/browser deploy/frontend/dist/frontend/
-        
-        echo "📋 Copying configuration files..."
         [ -f ${{ env.WORKING_DIR }}/backEnd/web.config ] && cp ${{ env.WORKING_DIR }}/backEnd/web.config deploy/ || echo "⚠️ No web.config found"
-        
-        echo "📂 Creating uploads directory..."
         mkdir -p deploy/uploads
-        
-        echo "📊 Deployment package structure:"
-        ls -la deploy/
-        echo ""
-        echo "🎨 Frontend files:"
-        ls -la deploy/frontend/dist/frontend/browser/ | head -20
-        
-        echo "🗜️ Creating zip file..."
         cd deploy
         zip -r ../deployment.zip . -x "*.git*" -x "*node_modules/.cache/*" -x "*.env"
         cd ..
-        
-        echo "✅ Deployment package created successfully"
         ls -lh deployment.zip
+
+    # Authenticate to Azure via OIDC
+    - name: 🔐 Azure Login via OIDC
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        allow-no-subscriptions: true
 
     # Deploy to Azure
     - name: 🚀 Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ./deployment.zip
 
     - name: 🎉 Deployment Summary
@@ -99,5 +90,3 @@ jobs:
         echo "✅ Application deployed successfully!"
         echo "🌐 Frontend URL: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
         echo "🔌 API URL: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/api"
-        echo "📊 Check logs in Azure Portal if needed"
-        echo "🔍 Monitor deployment: https://portal.azure.com"
