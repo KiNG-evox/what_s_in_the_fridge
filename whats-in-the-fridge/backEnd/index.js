@@ -45,13 +45,20 @@ app.use(cors(corsOptions));
 // Serve uploaded images - MUST come before API routes
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// API Routes - MUST come before Angular static files
-app.get("/", (req, res) => {
+// API Health check endpoint
+app.get("/api", (req, res) => {
   res.json({
     message: "Welcome to What's in the Fridge API",
     status: "Server is running ✅",
     version: "1.0.0",
     environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "healthy",
+    timestamp: new Date().toISOString()
   });
 });
 
