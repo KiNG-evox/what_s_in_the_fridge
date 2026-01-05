@@ -6,10 +6,17 @@
   "scripts": {
     "test": "jest",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo 'No build step required for Node.js backend'",
+    "build:frontend": "cd ../frontend && npm install && npm run build",
+    "postinstall": "echo 'Backend dependencies installed successfully'"
   },
-  "author": "Your Name",
-  "license": "ISC",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "author": "Abdelkarim Darif",
+  "license": "MIT",
   "dependencies": {
     "@babel/preset-env": "^7.28.5",
     "bcrypt": "^6.0.0",

@@ -1,0 +1,22 @@
+{
+  "name": "whats-in-the-fridge-root",
+  "version": "1.0.0",
+  "description": "AI-Powered Recipe Generator - Root Scripts",
+  "scripts": {
+    "install:backend": "cd whats-in-the-fridge/backEnd && npm install",
+    "install:frontend": "cd whats-in-the-fridge/frontend && npm install",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "dev:backend": "cd whats-in-the-fridge/backEnd && npm run dev",
+    "dev:frontend": "cd whats-in-the-fridge/frontend && npm start",
+    "build:backend": "cd whats-in-the-fridge/backEnd && npm run build",
+    "build:frontend": "cd whats-in-the-fridge/frontend && npm run build",
+    "test:backend": "cd whats-in-the-fridge/backEnd && npm test",
+    "test:frontend": "cd whats-in-the-fridge/frontend && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darif177/what_s_in_the_fridge.git"
+  },
+  "author": "Abdelkarim Darif",
+  "license": "MIT"
+}

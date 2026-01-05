@@ -1,0 +1,59 @@
+name: Deploy Backend to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'whats-in-the-fridge/backEnd/**'
+      - '.github/workflows/backend-deploy.yml'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20.x'
+  AZURE_WEBAPP_NAME: 'whats-in-fridge-backend'  # Replace with your Azure Web App name
+  AZURE_WEBAPP_PACKAGE_PATH: 'whats-in-the-fridge/backEnd'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/package-lock.json
+
+    - name: Install dependencies
+      run: |
+        cd ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        npm ci
+
+    - name: Run tests (optional)
+      run: |
+        cd ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        npm test --if-present
+      continue-on-error: true
+
+    - name: Create deployment package
+      run: |
+        cd ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        zip -r deploy.zip . -x "node_modules/*" "*.git*" "*.env*" "test*"
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_BACKEND_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/deploy.zip
+
+    - name: Clean up
+      if: always()
+      run: |
+        cd ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        rm -f deploy.zip

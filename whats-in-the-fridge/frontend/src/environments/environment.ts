@@ -1,6 +1,7 @@
+// Production environment - hosted on same Azure Web App as backend
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:3000/api',
-  uploadsUrl: 'http://localhost:3000' // Add this line
-
+  production: true,
+  // Using relative paths since frontend and backend are on same domain
+  apiUrl: '/api',
+  uploadsUrl: '/uploads'
 };

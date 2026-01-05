@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "logging": {
+    "fileLoggingMode": "always",
+    "logLevel": {
+      "default": "Information"
+    }
+  },
+  "cors": {
+    "enabled": true
+  }
+}

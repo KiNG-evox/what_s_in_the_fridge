@@ -16,3 +16,28 @@ uploads/
 # OS
 .DS_Store
 Thumbs.db
+
+# Angular
+.angular/
+dist/
+tmp/
+out-tsc/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build
+build/
+*.zip
+
+# Misc
+*.bak
+*.tmp

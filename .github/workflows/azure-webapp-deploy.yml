@@ -1,0 +1,103 @@
+name: Deploy to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: 'whats-in-the-fridge'  # CHANGE THIS to your app name
+  NODE_VERSION: '20.x'
+  WORKING_DIR: './whats-in-the-fridge'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🟢 Set up Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: |
+          whats-in-the-fridge/frontend/package-lock.json
+          whats-in-the-fridge/backEnd/package-lock.json
+
+    # Build Frontend
+    - name: 📦 Install frontend dependencies
+      working-directory: ${{ env.WORKING_DIR }}/frontend
+      run: npm ci
+
+    - name: 🔨 Build frontend (Angular)
+      working-directory: ${{ env.WORKING_DIR }}/frontend
+      run: npm run build -- --configuration=production
+
+    - name: ✅ Verify frontend build
+      run: |
+        if [ ! -d "${{ env.WORKING_DIR }}/frontend/dist/frontend/browser" ]; then
+          echo "❌ Frontend build failed - dist folder not found"
+          exit 1
+        fi
+        echo "✅ Frontend built successfully"
+        ls -la ${{ env.WORKING_DIR }}/frontend/dist/frontend/browser
+
+    # Prepare Backend
+    - name: 📦 Install backend dependencies
+      working-directory: ${{ env.WORKING_DIR }}/backEnd
+      run: npm ci --omit=dev
+
+    # Create deployment package
+    - name: 📦 Create deployment package
+      run: |
+        echo "🔧 Creating deployment directory..."
+        mkdir -p deploy
+        
+        echo "📁 Copying backend files..."
+        cp -r ${{ env.WORKING_DIR }}/backEnd/* deploy/
+        
+        echo "🎨 Creating frontend directory structure..."
+        mkdir -p deploy/frontend/dist/frontend
+        
+        echo "🚀 Copying frontend build..."
+        cp -r ${{ env.WORKING_DIR }}/frontend/dist/frontend/browser deploy/frontend/dist/frontend/
+        
+        echo "📋 Copying configuration files..."
+        [ -f ${{ env.WORKING_DIR }}/backEnd/web.config ] && cp ${{ env.WORKING_DIR }}/backEnd/web.config deploy/ || echo "⚠️ No web.config found"
+        
+        echo "📂 Creating uploads directory..."
+        mkdir -p deploy/uploads
+        
+        echo "📊 Deployment package structure:"
+        ls -la deploy/
+        echo ""
+        echo "🎨 Frontend files:"
+        ls -la deploy/frontend/dist/frontend/browser/ | head -20
+        
+        echo "🗜️ Creating zip file..."
+        cd deploy
+        zip -r ../deployment.zip . -x "*.git*" -x "*node_modules/.cache/*" -x "*.env"
+        cd ..
+        
+        echo "✅ Deployment package created successfully"
+        ls -lh deployment.zip
+
+    # Deploy to Azure
+    - name: 🚀 Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ./deployment.zip
+
+    - name: 🎉 Deployment Summary
+      run: |
+        echo "✅ Application deployed successfully!"
+        echo "🌐 Frontend URL: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
+        echo "🔌 API URL: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/api"
+        echo "📊 Check logs in Azure Portal if needed"
+        echo "🔍 Monitor deployment: https://portal.azure.com"
