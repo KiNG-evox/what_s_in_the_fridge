@@ -95,7 +95,6 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ./deployment.zip
-        slot-name: production  # optional, remove if not using slots
 
     # --------------------
     # Deployment Summary
