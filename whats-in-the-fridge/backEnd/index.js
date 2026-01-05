@@ -69,7 +69,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(angularDistPath));
   
   // Handle Angular routing - send all non-API requests to index.html
-  app.get('*', (req, res, next) => {
+  app.get('/(.*)', (req, res, next) => {
     // Don't serve index.html for API routes
     if (req.url.startsWith('/api/') || req.url.startsWith('/uploads/')) {
       return next();
